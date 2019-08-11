@@ -17,7 +17,7 @@ RUN apt-get update \
     #
     # Install C++ tools
     && apt-get -y install build-essential gcc g++ cmake cppcheck valgrind ninja-build \
-      wget git libtool libssl-dev libboost-all-dev\
+      wget git libtool libssl-dev libboost-all-dev libjansson-dev libuv1-dev\
     #
     # Clean up
     && apt-get autoremove -y \
@@ -41,12 +41,18 @@ RUN cd /home && git clone https://github.com/darrenjs/wampcc.git wampcc \
   && cd wampcc \
   && mkdir wampcc-release \
   && cd wampcc-release \
-  && cmake --verbose -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
+  && cmake ../ -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
       -DCMAKE_BUILD_TYPE=Release \
       -DLIBUV_DIR=/opt/libuv-1.10.2 \
       -DJANSSON_DIR=/opt/jansson-2.10 \
       -DCMAKE_INSTALL_PREFIX=/usr/local \
   && make
 
+RUN git clone -q https://github.com/google/googletest.git /googletest \
+  && mkdir -p /googletest/build \
+  && cd /googletest/build \
+  && cmake .. && make && make install \
+  && cd / && rm -rf /googletest
+  
 # Switch back to dialog for any ad-hoc use of apt-get
 ENV DEBIAN_FRONTEND=dialog
