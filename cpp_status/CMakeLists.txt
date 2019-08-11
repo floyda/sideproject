@@ -1,8 +1,9 @@
 cmake_minimum_required(VERSION 3.5)
+project(cpp_status)
 
 # Definitions
 set(PROJECT_NAME_STR cpp_status)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}/bin")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bin")
 
 # Project title and define versioning
 project(${PROJECT_NAME_STR})
@@ -25,7 +26,7 @@ file(GLOB_RECURSE SRC_FILES src/*/*.cpp)
 #ADD_LIBRARY(demo_objects OBJECT ${INC_FILES} ${SRC_FILES})
 
 # Dependencies
-find_package(Boost COMPONENTS filesystem system unit_test_framework REQUIRED)
+find_package(Boost COMPONENTS filesystem system REQUIRED)
 
 # Unit tests
 # add_subdirectory(test)

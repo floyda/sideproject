@@ -16,12 +16,37 @@ RUN apt-get update \
     && apt-get -y install git procps lsb-release \
     #
     # Install C++ tools
-    && apt-get -y install build-essential cmake cppcheck valgrind ninja-build\
+    && apt-get -y install build-essential gcc g++ cmake cppcheck valgrind ninja-build \
+      wget git libtool libssl-dev libboost-all-dev\
     #
     # Clean up
     && apt-get autoremove -y \
     && apt-get clean -y \
     && rm -rf /var/lib/apt/lists/*
+
+# Download boost, untar, setup install with bootstrap and only do the Program Options library,
+# and then install
+# RUN cd /home && wget http://downloads.sourceforge.net/project/boost/boost/1.60.0/boost_1_60_0.tar.gz \
+#   && tar xfz boost_1_60_0.tar.gz \
+#   && rm boost_1_60_0.tar.gz \
+#   && cd boost_1_60_0 \
+#   && ./bootstrap.sh --prefix=/usr/local --with-libraries=program_options,system,filesystem \
+#   && ./b2 install \
+#   && cd /home \
+#   && rm -rf boost_1_60_0
+
+# Download wampcc
+#
+RUN cd /home && git clone https://github.com/darrenjs/wampcc.git wampcc \
+  && cd wampcc \
+  && mkdir wampcc-release \
+  && cd wampcc-release \
+  && cmake --verbose -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
+      -DCMAKE_BUILD_TYPE=Release \
+      -DLIBUV_DIR=/opt/libuv-1.10.2 \
+      -DJANSSON_DIR=/opt/jansson-2.10 \
+      -DCMAKE_INSTALL_PREFIX=/usr/local \
+  && make
 
 # Switch back to dialog for any ad-hoc use of apt-get
 ENV DEBIAN_FRONTEND=dialog
