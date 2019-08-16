@@ -47,6 +47,7 @@ RUN cd /home && git clone https://github.com/darrenjs/wampcc.git wampcc \
       -DJANSSON_DIR=/opt/jansson-2.10 \
       -DCMAKE_INSTALL_PREFIX=/usr/local \
   && make
+  && make install
 
 RUN git clone -q https://github.com/google/googletest.git /googletest \
   && mkdir -p /googletest/build \

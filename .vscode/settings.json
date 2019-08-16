@@ -1,4 +1,3 @@
 {
-    "C_Cpp.default.configurationProvider": "go2sh.cmake-integration",
     "git.ignoreLimitWarning": true
 }
